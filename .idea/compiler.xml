@@ -8,11 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
         <module name="gestion-clients" />
-        <module name="gestion-produits" />
         <module name="gestion-commandes" />
         <module name="api-gateway" />
         <module name="gestion-livraison" />
-        <module name="gestion-menus" />
         <module name="eureka-server" />
       </profile>
     </annotationProcessing>
