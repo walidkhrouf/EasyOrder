@@ -6,16 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="config-server" />
-        <module name="gestion-clients" />
-        <module name="gestion-produits" />
-        <module name="gestion-commandes" />
-        <module name="api-gateway" />
-        <module name="gestion-livraison" />
         <module name="gestion-menus" />
-        <module name="eureka-server" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="api-gateway" target="17" />
+      <module name="config-server" target="1.8" />
+      <module name="eureka-server" target="1.8" />
+      <module name="gestion-clients" target="1.8" />
+      <module name="gestion-commandes" target="1.8" />
+      <module name="gestion-livraison" target="1.8" />
+      <module name="gestion-produits" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
