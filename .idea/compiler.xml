@@ -12,10 +12,12 @@
         <module name="gestion-commandes" />
         <module name="api-gateway" />
         <module name="gestion-livraison" />
-        <module name="gestion-menus" />
         <module name="eureka-server" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gestion-menus" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
