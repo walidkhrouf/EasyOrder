@@ -51,7 +51,7 @@
         <module>gestion-produits</module>
         <module>gestion-menus</module>
         <module>gestion-commandes</module>
-        <!--   <module>gestion-livraison</module> -->
+         <module>gestion-livraison</module>
           <module>api-gateway</module>
 
       </modules>
