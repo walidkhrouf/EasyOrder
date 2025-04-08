@@ -1,0 +1,1 @@
+EasyOrder est une application de gestion de commandes en ligne conçue pour simplifier la gestion des produits, des commandes, des utilisateurs, des livraisons et des clients dans un environnement de restauration en utilisant l'API Gateway et le serveur Eureka
