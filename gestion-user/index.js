@@ -27,8 +27,8 @@ const startServer = async () => {
     // Configuration Eureka
     const client = new Eureka({
         instance: {
-            app: 'GESTION-USERS', // Mise à jour du nom de l'application
-            hostName: 'localhost',
+            app: 'gestion-users', // Mise à jour du nom de l'application
+            hostName: 'gestion-users',
             ipAddr: '127.0.0.1',
             port: {
                 '$': process.env.PORT || 8086,

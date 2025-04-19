@@ -25,7 +25,7 @@ exports.createUser = async (req, res) => {
         let clientId = null;
 
         if (role === 'client') {
-            const clientResponse = await axios.post('http://localhost:8082/api/clients', {
+            const clientResponse = await axios.post('http://gestion-clients:8082/api/clients', {
                 nom: username,
                 email: `${username}@example.com`
             });
@@ -169,7 +169,7 @@ exports.updateUser = async (req, res) => {
 
         if (clientId) {
             try {
-                const clientResponse = await axios.get(`http://localhost:8082/api/clients/${clientId}`);
+                const clientResponse = await axios.get(`http://gestion-clients:8082/api/clients/${clientId}`);
                 if (!clientResponse.data) {
                     return res.status(404).json({ message: 'Client non trouvé' });
                 }
@@ -209,7 +209,7 @@ exports.getClientDetails = async (req, res) => {
             return res.status(404).json({ message: 'Aucun client associé à cet utilisateur' });
         }
 
-        const response = await axios.get(`http://localhost:8082/api/clients/${user.clientId}`);
+        const response = await axios.get(`http://gestion-clients:8082/api/clients/${user.clientId}`);
         if (!response.data || !response.data.id) {
             return res.status(404).json({ message: `Client non trouvé avec l'ID : ${user.clientId}` });
         }

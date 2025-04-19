@@ -4,7 +4,7 @@ import com.esprit.easyorder.gestionlivraison.clients.CommandeClient;
 import com.esprit.easyorder.gestionlivraison.entities.Livraison;
 import com.esprit.easyorder.gestionlivraison.entities.LivraisonStatus;
 import com.esprit.easyorder.gestionlivraison.repositories.LivraisonRepository;
-import com.esprit.easyorder.gestioncommandes.entities.Commande;
+import com.esprit.easyorder.gestionlivraison.dto.CommandeDTO;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class LivraisonService {
         }
 
         try {
-            Commande commande = commandeClient.getCommandeById(livraison.getCommandeId());
+            CommandeDTO commande = commandeClient.getCommandeById(livraison.getCommandeId());
             if (commande == null) {
                 throw new RuntimeException("Commande non trouvée avec l'ID : " + livraison.getCommandeId());
             }
