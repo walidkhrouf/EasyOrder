@@ -1,0 +1,9 @@
+<nav class="navbar">
+  <div class="navbar-brand">Gestion Users</div>
+  <ul class="nav-links">
+    <li><a routerLink="/">Accueil</a></li>
+    <li *ngIf="!isAuthenticated"><a routerLink="/inscription">Inscription</a></li>
+    <li *ngIf="!isAuthenticated"><a routerLink="/login">Connexion</a></li>
+    <li *ngIf="isAuthenticated" (click)="logout()">Déconnexion</li>
+  </ul>
+</nav>

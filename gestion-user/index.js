@@ -3,8 +3,18 @@ const express = require('express');
 const { Eureka } = require('eureka-js-client');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const cors = require('cors');
 
 const app = express();
+
+
+// Configurer CORS
+app.use(cors({
+    origin: 'http://localhost:8088', // Allow only from API Gateway
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 app.use(express.json());
 
 // Start the server and connect to MongoDB
