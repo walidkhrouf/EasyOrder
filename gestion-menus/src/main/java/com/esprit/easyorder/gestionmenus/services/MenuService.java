@@ -1,9 +1,9 @@
 package com.esprit.easyorder.gestionmenus.services;
 
 import com.esprit.easyorder.gestionmenus.clients.ProduitClient;
+import com.esprit.easyorder.gestionmenus.dto.ProduitDTO;
 import com.esprit.easyorder.gestionmenus.entities.Menu;
 import com.esprit.easyorder.gestionmenus.repositories.MenuRepository;
-import com.esprit.easyorder.gestionproduits.entities.Produit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class MenuService {
             throw new RuntimeException("La liste des IDs de produits ne peut pas être vide");
         }
 
-        List<Produit> produits = produitClient.getProduitsByIds(produitIds);
+        List<ProduitDTO> produits = produitClient.getProduitsByIds(produitIds);
         if (produits.size() != produitIds.size()) {
             throw new RuntimeException("Certains produits n'existent pas : " + produitIds);
         }

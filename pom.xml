@@ -51,18 +51,18 @@
         <module>gestion-produits</module>
         <module>gestion-menus</module>
         <module>gestion-commandes</module>
-        <!--   <module>gestion-livraison</module> -->
-          <module>api-gateway</module>
+        <module>gestion-livraison</module>
+        <module>api-gateway</module>
 
-      </modules>
+    </modules>
 
-      <build>
-          <plugins>
-              <plugin>
-                  <groupId>org.springframework.boot</groupId>
-                  <artifactId>spring-boot-maven-plugin</artifactId>
-                  <version>${spring-boot.version}</version>
-              </plugin>
-          </plugins>
-      </build>
-  </project>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

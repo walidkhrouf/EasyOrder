@@ -2,7 +2,7 @@ package com.esprit.easyorder.gestionmenus.controllers;
 
 import com.esprit.easyorder.gestionmenus.entities.Menu;
 import com.esprit.easyorder.gestionmenus.services.MenuService;
-import com.esprit.easyorder.gestionproduits.entities.Produit;
+import com.esprit.easyorder.gestionmenus.dto.ProduitDTO;
 import com.esprit.easyorder.gestionmenus.clients.ProduitClient;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +42,9 @@ public class MenuController {
     public ResponseEntity<Menu> createMenu(@Valid @RequestBody Menu menu) {
         try {
             // Calculer le prix total en fonction des produits
-            List<Produit> produits = produitClient.getProduitsByIds(menu.getProduitIds());
+            List<ProduitDTO> produits = produitClient.getProduitsByIds(menu.getProduitIds());
             Double prixTotal = produits.stream()
-                    .mapToDouble(Produit::getPrix)
+                    .mapToDouble(ProduitDTO::getPrix)
                     .sum();
             menu.setPrixTotal(prixTotal);
 
@@ -64,9 +64,9 @@ public class MenuController {
     public ResponseEntity<Menu> updateMenu(@PathVariable("id") Long id, @Valid @RequestBody Menu menu) {
         try {
             // Calculer le prix total en fonction des produits
-            List<Produit> produits = produitClient.getProduitsByIds(menu.getProduitIds());
+            List<ProduitDTO> produits = produitClient.getProduitsByIds(menu.getProduitIds());
             Double prixTotal = produits.stream()
-                    .mapToDouble(Produit::getPrix)
+                    .mapToDouble(ProduitDTO::getPrix)
                     .sum();
             menu.setPrixTotal(prixTotal);
 

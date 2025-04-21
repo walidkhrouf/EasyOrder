@@ -3,8 +3,25 @@ const express = require('express');
 const { Eureka } = require('eureka-js-client');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const cors = require('cors');
 
 const app = express();
+
+
+const allowedOrigins = [ 'http://localhost:4200', 'http://localhost:8088' ];
+app.use(cors({
+    origin: (origin, callback) => {
+        // allow localhost tools (like Postman) or undefined origin
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        callback(new Error('CORS policy: Origin not allowed'), false);
+    },
+    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+    allowedHeaders: ['Content-Type','Authorization'],
+    credentials: true,
+}));
 app.use(express.json());
 
 // Start the server and connect to MongoDB
@@ -27,8 +44,8 @@ const startServer = async () => {
     // Configuration Eureka
     const client = new Eureka({
         instance: {
-            app: 'GESTION-USERS', // Mise à jour du nom de l'application
-            hostName: 'localhost',
+            app: 'gestion-users', // Mise à jour du nom de l'application
+            hostName: 'gestion-users',
             ipAddr: '127.0.0.1',
             port: {
                 '$': process.env.PORT || 8086,
