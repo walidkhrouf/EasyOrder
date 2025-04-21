@@ -3,6 +3,21 @@
   <div class="menu">
     <button (click)="navigateTo('/voir-profil')">Voir Profil</button>
     <button (click)="navigateTo('/accueil')">Accueil</button>
-    <!-- Add more menu items as needed -->
+
+  </div>
+  <div class="menu-grid">
+    <h2>Menus Disponibles</h2>
+    <div class="menu-card" *ngFor="let menu of availableMenus">
+      <div class="menu-card-image">
+        <img [src]="menu.imageUrl" alt="{{ menu.nom }}" *ngIf="menu.imageUrl" />
+      </div>
+      <div class="menu-card-content">
+        <h3>{{ menu.nom }}</h3>
+        <p class="description">{{ menu.description }}</p>
+        <p class="category"><strong>Catégorie:</strong> {{ menu.categorie }}</p>
+        <p class="price"><strong>Prix:</strong> {{ menu.prixTotal | currency:'TND' }}</p>
+      </div>
+    </div>
+    <p class="no-menus" *ngIf="availableMenus.length === 0">Aucun menu disponible pour le moment.</p>
   </div>
 </div>

@@ -1,4 +1,100 @@
 <div class="page-admin-container">
-  <h2>Page Admin</h2>
-  <p>Page d'administration en cours de développement.</p>
+  <h2>Page Admin - Gestion des Menus</h2>
+  <button class="add-btn" (click)="openAddForm()">Ajouter un Nouveau Menu</button>
+
+  <!-- Menu List -->
+  <div class="menu-table">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Catégorie</th>
+        <th>Prix Total</th>
+        <th>Disponible</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let menu of menus">
+        <td>{{ menu.id }}</td>
+        <td>{{ menu.nom }}</td>
+        <td>{{ menu.categorie }}</td>
+        <td>{{ menu.prixTotal | currency:'TND' }}</td>
+        <td>{{ menu.disponible ? 'Oui' : 'Non' }}</td>
+        <td>
+          <button class="edit-btn" (click)="openEditForm(menu)">Modifier</button>
+          <button class="delete-btn" (click)="deleteMenu(menu.id)">Supprimer</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <p class="no-menus" *ngIf="menus.length === 0">Aucun menu trouvé.</p>
+  </div>
+
+  <!-- Form Modal for Add/Edit -->
+  <div class="modal-overlay" *ngIf="showForm">
+    <div class="modal-content">
+      <h3>{{ isEditing ? 'Modifier le Menu' : 'Ajouter un Nouveau Menu' }}</h3>
+      <form [formGroup]="menuForm" (ngSubmit)="saveMenu()">
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input id="nom" formControlName="nom" placeholder="Nom du menu" />
+          <div *ngIf="menuForm.get('nom')?.invalid && menuForm.get('nom')?.touched" class="error">
+            Le nom est requis (2-100 caractères).
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" formControlName="description" placeholder="Description du menu"></textarea>
+          <div *ngIf="menuForm.get('description')?.invalid && menuForm.get('description')?.touched" class="error">
+            Maximum 500 caractères.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="categorie">Catégorie</label>
+          <input id="categorie" formControlName="categorie" placeholder="Catégorie du menu" />
+          <div *ngIf="menuForm.get('categorie')?.invalid && menuForm.get('categorie')?.touched" class="error">
+            La catégorie est requise.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="disponible">Disponible</label>
+          <input type="checkbox" id="disponible" formControlName="disponible" />
+        </div>
+        <div class="form-group">
+          <label for="imageUrl">URL de l'Image</label>
+          <input id="imageUrl" formControlName="imageUrl" placeholder="URL de l'image" />
+          <div *ngIf="menuForm.get('imageUrl')?.invalid && menuForm.get('imageUrl')?.touched" class="error">
+            Maximum 255 caractères.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tags">Tags (séparés par des virgules)</label>
+          <input id="tags" formControlName="tags" placeholder="Tags (ex: épicé, sans gluten)" />
+        </div>
+        <div class="form-group">
+          <label>Produits Associés</label>
+          <div class="produit-list">
+            <div *ngFor="let produit of produits" class="produit-item">
+              <input
+                type="checkbox"
+                [id]="'produit-' + produit.id"
+                [checked]="menuForm.get('produitIds')?.value.includes(produit.id)"
+                (change)="toggleProduit(produit.id)"
+              />
+              <label [for]="'produit-' + produit.id">{{ produit.nom }} ({{ produit.prix | currency:'TND' }})</label>
+            </div>
+          </div>
+          <div *ngIf="menuForm.get('produitIds')?.invalid && menuForm.get('produitIds')?.touched" class="error">
+            Veuillez sélectionner au moins un produit.
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" [disabled]="menuForm.invalid">Sauvegarder</button>
+          <button type="button" (click)="closeForm()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

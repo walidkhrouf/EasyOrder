@@ -13,6 +13,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { VoirProfilComponent } from './components/voir-profil/voir-profil.component';
 import { AccueilComponent } from './components/accueil/accueil.component';
+import { MenuListComponent } from './components/menu-list/menu-list.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AccueilComponent } from './components/accueil/accueil.component';
     ClientProfileComponent,
     PageAdminComponent,
     AccueilComponent,
-    VoirProfilComponent
+    VoirProfilComponent,
+    MenuListComponent
   ],
     imports: [
         BrowserModule,
