@@ -8,12 +8,19 @@ const cors = require('cors');
 const app = express();
 
 
-// Configurer CORS
+const allowedOrigins = [ 'http://localhost:4200', 'http://localhost:8088' ];
 app.use(cors({
-    origin: 'http://localhost:8088', // Allow only from API Gateway
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    origin: (origin, callback) => {
+        // allow localhost tools (like Postman) or undefined origin
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        callback(new Error('CORS policy: Origin not allowed'), false);
+    },
+    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+    allowedHeaders: ['Content-Type','Authorization'],
+    credentials: true,
 }));
 app.use(express.json());
 

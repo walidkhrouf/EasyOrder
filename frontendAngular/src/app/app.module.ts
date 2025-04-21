@@ -9,8 +9,10 @@ import { InscriptionComponent } from './components/inscription/inscription.compo
 import { LoginComponent } from './components/login/login.component';
 import { ClientProfileComponent } from './components/client-profile/client-profile.component';
 import { PageAdminComponent } from './components/page-admin/page-admin.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import { VoirProfilComponent } from './components/voir-profil/voir-profil.component';
+import { AccueilComponent } from './components/accueil/accueil.component';
 
 @NgModule({
   declarations: [
@@ -20,13 +22,16 @@ import {HttpClientModule} from "@angular/common/http";
     InscriptionComponent,
     LoginComponent,
     ClientProfileComponent,
-    PageAdminComponent
+    PageAdminComponent,
+    AccueilComponent,
+    VoirProfilComponent
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormsModule
     ],
   providers: [],
   bootstrap: [AppComponent]

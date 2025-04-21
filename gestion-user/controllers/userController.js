@@ -14,22 +14,15 @@ if (!JWT_SECRET) {
 const CLIENTS_API_URL = 'http://api-gateway:8088/clients';
 
 // Liste des rôles valides
-const VALID_ROLES = ['client', 'admin'];
 
 exports.createUser = async (req, res) => {
     try {
-        // Validation des données entrantes
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ message: 'Validation failed', errors: errors.array() });
         }
 
-        const { username, password, role } = req.body;
-
-        // Vérifier que le rôle est valide
-        if (!VALID_ROLES.includes(role)) {
-            return res.status(400).json({ message: `Rôle invalide. Les rôles valides sont : ${VALID_ROLES.join(', ')}` });
-        }
+        const { username, password, nom, prenom, email, telephone, adresse, dateNaissance } = req.body;
 
         // Vérifier si l'utilisateur existe déjà
         const existingUser = await User.findOne({ username });
@@ -40,25 +33,28 @@ exports.createUser = async (req, res) => {
         // Hacher le mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Créer un client si le rôle est 'client'
+        // Créer un client (role is always 'client')
         let clientId = null;
-        if (role === 'client') {
-            try {
-                const clientResponse = await axios.post(CLIENTS_API_URL, {
-                    nom: username,
-                    email: `${username}@example.com`,
-                });
-                clientId = clientResponse.data.id;
-            } catch (error) {
-                return res.status(500).json({
-                    message: 'Erreur lors de la création du client via gestion-clients',
-                    error: error.response?.data || error.message,
-                });
-            }
+        try {
+            const clientResponse = await axios.post(CLIENTS_API_URL, {
+                nom: nom || username, // Use username as fallback
+                prenom: prenom || 'DefaultPrenom',
+                email: email || `${username}@example.com`,
+                telephone: telephone || '12345678',
+                adresse: adresse || '',
+                dateNaissance: dateNaissance || null,
+                commandeIds: [], // Empty array initially
+            });
+            clientId = clientResponse.data.id;
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Erreur lors de la création du client via gestion-clients',
+                error: error.response?.data || error.message,
+            });
         }
 
         // Créer et sauvegarder l'utilisateur
-        const user = new User({ username, password: hashedPassword, role, clientId });
+        const user = new User({ username, password: hashedPassword, role: 'client', clientId });
         await user.save();
 
         res.status(201).json({
@@ -66,7 +62,7 @@ exports.createUser = async (req, res) => {
             data: {
                 username: user.username,
                 role: user.role,
-                clientId: user.clientId || null,
+                clientId: user.clientId,
                 createdAt: user.createdAt,
             },
         });

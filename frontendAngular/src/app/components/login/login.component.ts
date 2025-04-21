@@ -1,35 +1,30 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  loginForm: FormGroup;
-  errorMessage: string | null = null;
+  credentials = { username: '', password: '' };
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
-    this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-  }
+  constructor(private authService: AuthService) {}
 
   onSubmit() {
-    if (this.loginForm.invalid) {
+    console.log('Credentials being sent:', this.credentials);
+    if (!this.credentials.username || !this.credentials.password) {
+      alert('Veuillez remplir tous les champs.');
       return;
     }
-
-    this.authService.login(this.loginForm.value).subscribe({
-      next: (response) => {
-        this.authService.setToken(response.data.token);
-        this.authService.redirectAfterLogin();
+    this.authService.login(this.credentials).subscribe({
+      next: () => {
+        console.log('Connexion réussie');
       },
-      error: (error) => {
-        this.errorMessage = error.error.message || 'Erreur lors de la connexion';
+      error: (err) => {
+        console.error('Erreur connexion:', err);
+        const errorMessage = err.message || 'Échec de la connexion';
+        alert(errorMessage);
       }
     });
   }

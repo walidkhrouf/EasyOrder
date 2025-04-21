@@ -1,0 +1,28 @@
+<div *ngIf="clientData; else loading">
+  <h1>Votre Profil</h1>
+  <div *ngIf="!isEditing">
+    <p><strong>Nom:</strong> {{ clientData.nom }}</p>
+    <p><strong>Prénom:</strong> {{ clientData.prenom }}</p>
+    <p><strong>Email:</strong> {{ clientData.email }}</p>
+    <p><strong>Téléphone:</strong> {{ clientData.telephone }}</p>
+    <p><strong>Adresse:</strong> {{ clientData.adresse || 'Non spécifiée' }}</p>
+    <p><strong>Date de naissance:</strong> {{ clientData.dateNaissance || 'Non spécifiée' }}</p>
+    <button (click)="toggleEdit()">Modifier</button>
+    <button (click)="deleteClient()">Supprimer le profil</button>
+  </div>
+  <div *ngIf="isEditing">
+    <form (ngSubmit)="updateClient()">
+      <input [(ngModel)]="updatedClientData.nom" name="nom" placeholder="Nom" required>
+      <input [(ngModel)]="updatedClientData.prenom" name="prenom" placeholder="Prénom" required>
+      <input [(ngModel)]="updatedClientData.email" name="email" type="email" placeholder="Email" required>
+      <input [(ngModel)]="updatedClientData.telephone" name="telephone" placeholder="Téléphone (8 chiffres)" required pattern="[0-9]{8}">
+      <input [(ngModel)]="updatedClientData.adresse" name="adresse" placeholder="Adresse">
+      <input [(ngModel)]="updatedClientData.dateNaissance" name="dateNaissance" type="date" placeholder="Date de naissance">
+      <button type="submit">Enregistrer</button>
+      <button type="button" (click)="toggleEdit()">Annuler</button>
+    </form>
+  </div>
+</div>
+<ng-template #loading>
+  <p>Chargement des données...</p>
+</ng-template>

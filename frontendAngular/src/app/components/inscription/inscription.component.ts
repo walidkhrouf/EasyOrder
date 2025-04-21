@@ -1,45 +1,47 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-inscription',
   templateUrl: './inscription.component.html',
-  styleUrls: ['./inscription.component.scss']
+  styleUrls: ['./inscription.component.scss'],
 })
 export class InscriptionComponent {
-  inscriptionForm: FormGroup;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
+  user = {
+    username: '',
+    password: '',
+    nom: '',
+    prenom: '',
+    email: '',
+    telephone: '',
+    adresse: '',
+    dateNaissance: '',
+  };
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
-    this.inscriptionForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      role: ['client', Validators.required]
-    });
-  }
+  today: string = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
 
-  onSubmit() {
-    if (this.inscriptionForm.invalid) {
+  constructor(private authService: AuthService) {}
+
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
+      console.log('Form is invalid:', form.value);
       return;
     }
 
-    this.authService.register(this.inscriptionForm.value).subscribe({
-      next: (response) => {
-        this.successMessage = response.message;
-        this.errorMessage = null;
-        setTimeout(() => this.router.navigate(['/login']), 2000);
+    const userToSend = {
+      ...this.user,
+      dateNaissance: this.user.dateNaissance || null, // Convert empty string to null
+    };
+
+    console.log('User data being sent:', userToSend);
+    this.authService.register(userToSend).subscribe({
+      next: () => console.log('Inscription réussie'),
+      error: (err) => {
+        console.error('Erreur inscription:', err);
+        const errorMessage = err.error?.message || 'Échec de l\'inscription. Veuillez réessayer.';
+        alert(errorMessage);
       },
-      error: (error) => {
-        this.errorMessage = error.error.message || 'Erreur lors de l’inscription';
-        this.successMessage = null;
-      }
     });
   }
 }

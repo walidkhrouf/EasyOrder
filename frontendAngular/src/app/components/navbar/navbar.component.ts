@@ -11,10 +11,12 @@ export class NavbarComponent {
   isAuthenticated = false;
 
   constructor(private authService: AuthService, private router: Router) {
+    // Check authentication status when the component initializes
     this.isAuthenticated = this.authService.isAuthenticated();
   }
 
   logout() {
+    // Remove the token and currentUser, update status, and redirect to login
     this.authService.removeToken();
     this.isAuthenticated = false;
     this.router.navigate(['/login']);

@@ -4,6 +4,9 @@ import { InscriptionComponent } from './components/inscription/inscription.compo
 import { LoginComponent } from './components/login/login.component';
 import { ClientProfileComponent } from './components/client-profile/client-profile.component';
 import { PageAdminComponent } from './components/page-admin/page-admin.component';
+import { AccueilComponent } from './components/accueil/accueil.component';
+import { VoirProfilComponent } from './components/voir-profil/voir-profil.component';
+
 
 
 const routes: Routes = [
@@ -11,7 +14,9 @@ const routes: Routes = [
   { path: 'inscription', component: InscriptionComponent },
   { path: 'login', component: LoginComponent },
   { path: 'client-profile', component: ClientProfileComponent },
-  { path: 'page-admin', component: PageAdminComponent }
+  { path: 'page-admin', component: PageAdminComponent },
+  { path: 'accueil', component: AccueilComponent },
+  { path: 'voir-profil', component: VoirProfilComponent },
 ];
 
 @NgModule({

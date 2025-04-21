@@ -1,28 +1,121 @@
-<div class="inscription-container">
-  <h2>Inscription</h2>
-  <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="username">Nom d'utilisateur :</label>
-      <input id="username" formControlName="username" required>
-      <div *ngIf="inscriptionForm.get('username')?.invalid && inscriptionForm.get('username')?.touched" class="error">
-        Le nom d'utilisateur doit avoir au moins 3 caractères.
-      </div>
-    </div>
-    <div>
-      <label for="password">Mot de passe :</label>
-      <input id="password" type="password" formControlName="password" required>
-      <div *ngIf="inscriptionForm.get('password')?.invalid && inscriptionForm.get('password')?.touched" class="error">
-        Le mot de passe doit avoir au moins 6 caractères.
-      </div>
-    </div>
-    <div>
-      <label for="role">Rôle :</label>
-      <select id="role" formControlName="role" required>
-        <option value="client">Client</option>
-        <option value="admin">Admin</option>
-      </select>
-    </div>
-    <button type="submit" [disabled]="inscriptionForm.invalid">S'inscrire</button>
-  </form>
-  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-</div>
+<form (ngSubmit)="onSubmit(inscriptionForm)" class="inscription-form" #inscriptionForm="ngForm">  <div class="form-group">
+    <label for="username">Nom d'utilisateur</label>
+    <input
+      [(ngModel)]="user.username"
+      name="username"
+      id="username"
+      placeholder="Nom d'utilisateur"
+      required
+      #username="ngModel"
+    >
+    <span class="error" *ngIf="username.invalid && username.touched">
+      Le nom d'utilisateur est obligatoire.
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="password">Mot de passe</label>
+    <input
+      [(ngModel)]="user.password"
+      name="password"
+      id="password"
+      type="password"
+      placeholder="Mot de passe"
+      required
+      minlength="6"
+      #password="ngModel"
+    >
+    <span class="error" *ngIf="password.invalid && password.touched">
+      Le mot de passe doit contenir au moins 6 caractères.
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="nom">Nom</label>
+    <input
+      [(ngModel)]="user.nom"
+      name="nom"
+      id="nom"
+      placeholder="Nom"
+      required
+      maxlength="100"
+      #nom="ngModel"
+    >
+    <span class="error" *ngIf="nom.invalid && nom.touched">
+      Le nom est requis (max 100 caractères).
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="prenom">Prénom</label>
+    <input
+      [(ngModel)]="user.prenom"
+      name="prenom"
+      id="prenom"
+      placeholder="Prénom"
+      required
+      maxlength="100"
+      #prenom="ngModel"
+    >
+    <span class="error" *ngIf="prenom.invalid && prenom.touched">
+      Le prénom est requis (max 100 caractères).
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input
+      [(ngModel)]="user.email"
+      name="email"
+      id="email"
+      type="email"
+      placeholder="Email"
+      required
+      email
+      #email="ngModel"
+    >
+    <span class="error" *ngIf="email.invalid && email.touched">
+      Veuillez entrer un email valide.
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="telephone">Téléphone (8 chiffres)</label>
+    <input
+      [(ngModel)]="user.telephone"
+      name="telephone"
+      id="telephone"
+      placeholder="Téléphone (8 chiffres)"
+      required
+      pattern="[0-9]{8}"
+      #telephone="ngModel"
+    >
+    <span class="error" *ngIf="telephone.invalid && telephone.touched">
+      Le téléphone doit contenir exactement 8 chiffres.
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="adresse">Adresse</label>
+    <input
+      [(ngModel)]="user.adresse"
+      name="adresse"
+      id="adresse"
+      placeholder="Adresse"
+      maxlength="200"
+      #adresse="ngModel"
+    >
+    <span class="error" *ngIf="adresse.invalid && adresse.touched">
+      L'adresse ne doit pas dépasser 200 caractères.
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="dateNaissance">Date de naissance</label>
+    <input
+      [(ngModel)]="user.dateNaissance"
+      name="dateNaissance"
+      id="dateNaissance"
+      type="date"
+      #dateNaissance="ngModel"
+    >
+    <span class="hint">Format: YYYY-MM-DD (ex. 1990-01-01)</span>
+    <span class="error" *ngIf="dateNaissance.invalid && dateNaissance.touched">
+      La date de naissance doit être dans le passé.
+    </span>
+  </div>
+  <button type="submit" [disabled]="inscriptionForm.invalid">Inscrire</button>
+</form>
