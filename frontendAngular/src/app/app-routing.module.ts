@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'page-admin', component: PageAdminComponent },
   { path: 'accueil', component: AccueilComponent },
   { path: 'voir-profil', component: VoirProfilComponent },
+  { path: '', redirectTo: '/accueil', pathMatch: 'full' },
 ];
 
 @NgModule({

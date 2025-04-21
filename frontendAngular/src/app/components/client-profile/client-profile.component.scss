@@ -1,4 +1,112 @@
 .client-profile-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: #005B99;
+    box-shadow: 0 0 5px rgba(0, 91, 153, 0.2);
+  }
+
+  &[type="date"] {
+    color: #333333;
+  }
+
+  &.ng-invalid.ng-touched {
+    border-color: #E63946;
+  }
+}
+
+.error {
+  color: #E63946;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.hint {
+  color: #666666;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+button {
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #005B99;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #003F6B;
+  }
+
+  &:disabled {
+    background-color: #6b7280;
+    cursor: not-allowed;
+  }
+}
+
+.loading {
   text-align: center;
-  margin: 2rem;
+  color: #666666;
+  font-size: 16px;
+}
+
+.error-message {
+  color: #E63946;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.success-message {
+  color: #2ECC71;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .client-profile-container {
+    margin: 20px;
+    padding: 15px;
+  }
 }
