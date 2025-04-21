@@ -1,10 +1,21 @@
 .inscription-form {
-  max-width: 600px;
+  max-width: 800px;
   margin: 40px auto;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group {
@@ -53,11 +64,30 @@ button {
   &:hover {
     background-color: #003F6B;
   }
+
+  &[disabled] {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 12px;
+}
+
+.hint {
+  font-size: 12px;
+  color: #666666;
 }
 
 @media (max-width: 768px) {
   .inscription-form {
     margin: 20px;
     padding: 15px;
+  }
+
+  .form-columns {
+    grid-template-columns: 1fr;
   }
 }

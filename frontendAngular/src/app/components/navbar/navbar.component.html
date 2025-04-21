@@ -1,14 +1,22 @@
 <nav>
-  <!-- Links for unauthenticated users -->
-  <div *ngIf="!isAuthenticated">
-    <a routerLink="/inscription">Inscription</a>
-    <a routerLink="/login">Connexion</a>
+  <!-- Logo on the left -->
+  <div class="logo">
+    <a routerLink="/" class="logo-text">EasyOrder</a>
   </div>
 
-  <!-- Links for authenticated users -->
-  <div *ngIf="isAuthenticated">
-    <a routerLink="/accueil">Accueil</a>
-    <a routerLink="/voir-profil">Voir Profil</a>
-    <a (click)="logout()">Déconnexion</a>
+  <!-- Navigation links on the right -->
+  <div class="nav-links">
+    <!-- Links for unauthenticated users -->
+    <div *ngIf="!isAuthenticated" class="nav-group">
+      <a routerLink="/inscription">Inscription</a>
+      <a routerLink="/login">Connexion</a>
+    </div>
+
+    <!-- Links for authenticated users -->
+    <div *ngIf="isAuthenticated" class="nav-group">
+      <a routerLink="/accueil">Accueil</a>
+      <a routerLink="/voir-profil">Voir Profil</a>
+      <a (click)="logout()">Déconnexion</a>
+    </div>
   </div>
 </nav>
