@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http'; // Import HttpHeaders
-import { Observable, tap, catchError, throwError, timeout } from 'rxjs';
+import { Observable, tap, catchError, throwError, timeout, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import {Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
 
 interface LoginResponse {
   message: string;
@@ -26,11 +26,25 @@ interface Client {
   providedIn: 'root'
 })
 export class AuthService {
+  // BehaviorSubject to track authentication state
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkInitialAuthState());
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
   constructor(private http: HttpClient, private router: Router) {}
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
     return token !== null && token !== undefined;
+  }
+
+  // Add isAdmin method to check if the user has the ADMIN role
+  isAdmin(): boolean {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const user = JSON.parse(currentUser);
+      return user.role ? user.role.toUpperCase() === 'ADMIN' : false;
+    }
+    return false;
   }
 
   getCurrentClientId(): number | null {
@@ -45,6 +59,7 @@ export class AuthService {
   removeToken(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
+    this.isAuthenticatedSubject.next(false); // Update authentication state
   }
 
   login(credentials: { username: string; password: string }): Observable<LoginResponse> {
@@ -59,6 +74,7 @@ export class AuthService {
           clientId: decoded.clientId,
         };
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        this.isAuthenticatedSubject.next(true); // Update authentication state
         this.router.navigate(['/accueil']);
       }),
       catchError(error => {
@@ -120,5 +136,11 @@ export class AuthService {
 
   navigateTo(path: string): void {
     this.router.navigate([path]);
+  }
+
+  // Helper method to check initial authentication state
+  private checkInitialAuthState(): boolean {
+    const token = localStorage.getItem('token');
+    return token !== null && token !== undefined;
   }
 }

@@ -100,18 +100,12 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
-      - CLIENT_SERVICE_URL=http://api-gateway:8088/api/clients
-      - PRODUIT_SERVICE_URL=http://api-gateway:8088/api/produits
     depends_on:
       eureka-server:
         condition: service_healthy
       config-server:
         condition: service_healthy
       api-gateway:
-        condition: service_healthy
-      gestion-clients:
-        condition: service_healthy
-      gestion-produits:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
@@ -180,9 +174,10 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-produits:3306/produitsdb
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-produits:3306/produitsdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_SHOW_SQL=true
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -226,10 +221,11 @@ services:
 
   mysql-produits:
     image: mysql:8.0
-
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=produitsdb
+    ports:
+      - "3306:3306"
     volumes:
       - mysql-produits-data:/var/lib/mysql
     healthcheck:
@@ -243,7 +239,6 @@ services:
 
   mongo-users:
     image: mongo:5.0
-
     environment:
       - MONGO_INITDB_DATABASE=usersdb
     volumes:

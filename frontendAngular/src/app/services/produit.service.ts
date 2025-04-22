@@ -17,7 +17,23 @@ export class ProduitService {
 
   constructor(private http: HttpClient) {}
 
+  // Fetch all products (GET /produits)
   getAllProduits(): Observable<Produit[]> {
     return this.http.get<Produit[]>(this.apiUrl);
+  }
+
+  // Create a new product (POST /produits)
+  createProduit(produit: Produit): Observable<Produit> {
+    return this.http.post<Produit>(this.apiUrl, produit);
+  }
+
+  // Update a product (PUT /produits/{id})
+  updateProduit(id: number, produit: Produit): Observable<Produit> {
+    return this.http.put<Produit>(`${this.apiUrl}/${id}`, produit);
+  }
+
+  // Delete a product (DELETE /produits/{id})
+  deleteProduit(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

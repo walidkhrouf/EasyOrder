@@ -1,0 +1,30 @@
+<div class="commande-container">
+  <h2>Mes Commandes</h2>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  <table class="table" *ngIf="commandes.length > 0">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Produits</th>
+      <th>Statut</th>
+      <th>Total</th>
+      <th>Créée le</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let commande of commandes">
+      <td>{{ commande.id }}</td>
+      <td>{{ commande.produitIds.join(', ') }}</td>
+      <td>{{ commande.status }}</td>
+      <td>{{ commande.total | currency:'TND' }}</td>
+      <td>{{ commande.createdAt | date:'medium' }}</td>
+      <td>
+        <button *ngIf="commande.id !== undefined" (click)="deleteCommande(commande.id)" class="btn btn-danger btn-sm">Supprimer</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

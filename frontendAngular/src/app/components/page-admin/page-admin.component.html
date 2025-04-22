@@ -1,6 +1,7 @@
 <div class="page-admin-container">
+  <!-- Menu Management Section -->
   <h2>Page Admin - Gestion des Menus</h2>
-  <button class="add-btn" (click)="openAddForm()">Ajouter un Nouveau Menu</button>
+  <button class="add-btn" (click)="openAddMenuForm()">Ajouter un Nouveau Menu</button>
 
   <!-- Menu List -->
   <div class="menu-table">
@@ -9,6 +10,7 @@
       <tr>
         <th>ID</th>
         <th>Nom</th>
+        <th>Description</th>
         <th>Catégorie</th>
         <th>Prix Total</th>
         <th>Disponible</th>
@@ -19,11 +21,12 @@
       <tr *ngFor="let menu of menus">
         <td>{{ menu.id }}</td>
         <td>{{ menu.nom }}</td>
+        <td>{{ menu.description || 'N/A' }}</td>
         <td>{{ menu.categorie }}</td>
         <td>{{ menu.prixTotal | currency:'TND' }}</td>
         <td>{{ menu.disponible ? 'Oui' : 'Non' }}</td>
         <td>
-          <button class="edit-btn" (click)="openEditForm(menu)">Modifier</button>
+          <button class="edit-btn" (click)="openEditMenuForm(menu)">Modifier</button>
           <button class="delete-btn" (click)="deleteMenu(menu.id)">Supprimer</button>
         </td>
       </tr>
@@ -32,46 +35,46 @@
     <p class="no-menus" *ngIf="menus.length === 0">Aucun menu trouvé.</p>
   </div>
 
-  <!-- Form Modal for Add/Edit -->
-  <div class="modal-overlay" *ngIf="showForm">
+  <!-- Menu Form Modal -->
+  <div class="modal-overlay" *ngIf="showMenuForm">
     <div class="modal-content">
-      <h3>{{ isEditing ? 'Modifier le Menu' : 'Ajouter un Nouveau Menu' }}</h3>
+      <h3>{{ isEditingMenu ? 'Modifier le Menu' : 'Ajouter un Nouveau Menu' }}</h3>
       <form [formGroup]="menuForm" (ngSubmit)="saveMenu()">
         <div class="form-group">
-          <label for="nom">Nom</label>
-          <input id="nom" formControlName="nom" placeholder="Nom du menu" />
+          <label for="nom-menu">Nom</label>
+          <input id="nom-menu" formControlName="nom" placeholder="Nom du menu" />
           <div *ngIf="menuForm.get('nom')?.invalid && menuForm.get('nom')?.touched" class="error">
             Le nom est requis (2-100 caractères).
           </div>
         </div>
         <div class="form-group">
-          <label for="description">Description</label>
-          <textarea id="description" formControlName="description" placeholder="Description du menu"></textarea>
+          <label for="description-menu">Description</label>
+          <textarea id="description-menu" formControlName="description" placeholder="Description du menu"></textarea>
           <div *ngIf="menuForm.get('description')?.invalid && menuForm.get('description')?.touched" class="error">
             Maximum 500 caractères.
           </div>
         </div>
         <div class="form-group">
-          <label for="categorie">Catégorie</label>
-          <input id="categorie" formControlName="categorie" placeholder="Catégorie du menu" />
+          <label for="categorie-menu">Catégorie</label>
+          <input id="categorie-menu" formControlName="categorie" placeholder="Catégorie du menu" />
           <div *ngIf="menuForm.get('categorie')?.invalid && menuForm.get('categorie')?.touched" class="error">
             La catégorie est requise.
           </div>
         </div>
         <div class="form-group">
-          <label for="disponible">Disponible</label>
-          <input type="checkbox" id="disponible" formControlName="disponible" />
+          <label for="disponible-menu">Disponible</label>
+          <input type="checkbox" id="disponible-menu" formControlName="disponible" />
         </div>
         <div class="form-group">
-          <label for="imageUrl">URL de l'Image</label>
-          <input id="imageUrl" formControlName="imageUrl" placeholder="URL de l'image" />
+          <label for="imageUrl-menu">URL de l'Image</label>
+          <input id="imageUrl-menu" formControlName="imageUrl" placeholder="URL de l'image" />
           <div *ngIf="menuForm.get('imageUrl')?.invalid && menuForm.get('imageUrl')?.touched" class="error">
             Maximum 255 caractères.
           </div>
         </div>
         <div class="form-group">
-          <label for="tags">Tags (séparés par des virgules)</label>
-          <input id="tags" formControlName="tags" placeholder="Tags (ex: épicé, sans gluten)" />
+          <label for="tags-menu">Tags (séparés par des virgules)</label>
+          <input id="tags-menu" formControlName="tags" placeholder="Tags (ex: épicé, sans gluten)" />
         </div>
         <div class="form-group">
           <label>Produits Associés</label>
@@ -92,7 +95,327 @@
         </div>
         <div class="form-actions">
           <button type="submit" [disabled]="menuForm.invalid">Sauvegarder</button>
-          <button type="button" (click)="closeForm()">Annuler</button>
+          <button type="button" (click)="closeMenuForm()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Product Management Section -->
+  <h2>Gestion des Produits</h2>
+  <button class="add-btn" (click)="openAddProduitForm()">Ajouter un Nouveau Produit</button>
+
+  <!-- Product List -->
+  <div class="produit-table">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prix</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let produit of produits">
+        <td>{{ produit.id }}</td>
+        <td>{{ produit.nom }}</td>
+        <td>{{ produit.prix | currency:'TND' }}</td>
+        <td>
+          <button class="edit-btn" (click)="openEditProduitForm(produit)">Modifier</button>
+          <button class="delete-btn" (click)="deleteProduit(produit.id)">Supprimer</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <p class="no-produits" *ngIf="produits.length === 0">Aucun produit trouvé.</p>
+  </div>
+
+  <!-- Product Form Modal -->
+  <div class="modal-overlay" *ngIf="showProduitForm">
+    <div class="modal-content">
+      <h3>{{ isEditingProduit ? 'Modifier le Produit' : 'Ajouter un Nouveau Produit' }}</h3>
+      <form [formGroup]="produitForm" (ngSubmit)="saveProduit()">
+        <div class="form-group">
+          <label for="nom-produit">Nom</label>
+          <input id="nom-produit" formControlName="nom" placeholder="Nom du produit" />
+          <div *ngIf="produitForm.get('nom')?.invalid && produitForm.get('nom')?.touched" class="error">
+            Le nom est requis (2-100 caractères).
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="prix-produit">Prix</label>
+          <input type="number" id="prix-produit" formControlName="prix" placeholder="Prix du produit" />
+          <div *ngIf="produitForm.get('prix')?.invalid && produitForm.get('prix')?.touched" class="error">
+            Le prix doit être un nombre positif.
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" [disabled]="produitForm.invalid">Sauvegarder</button>
+          <button type="button" (click)="closeProduitForm()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Commande Management Section -->
+  <h2>Gestion des Commandes</h2>
+  <button class="add-btn" (click)="openAddCommandeForm()">Ajouter une Nouvelle Commande</button>
+
+  <!-- Commande List -->
+  <div class="commande-table">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Client ID</th>
+        <th>Produits</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Date de Création</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let commande of commandes">
+        <td>{{ commande.id }}</td>
+        <td>{{ commande.clientId }}</td>
+        <td>{{ commande.produitIds.join(', ') }}</td>
+        <td>{{ commande.status }}</td>
+        <td>{{ commande.total | currency:'TND' }}</td>
+        <td>{{ commande.createdAt | date:'medium' }}</td>
+        <td>
+          <button class="edit-btn" (click)="openEditCommandeForm(commande)">Modifier</button>
+          <button *ngIf="commande.id !== undefined" class="delete-btn" (click)="deleteCommande(commande.id)">Supprimer</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <p class="no-commandes" *ngIf="commandes.length === 0">Aucune commande trouvée.</p>
+  </div>
+
+  <!-- Commande Form Modal -->
+  <div class="modal-overlay" *ngIf="showCommandeForm">
+    <div class="modal-content">
+      <h3>{{ isEditingCommande ? 'Modifier la Commande' : 'Ajouter une Nouvelle Commande' }}</h3>
+      <form [formGroup]="commandeForm" (ngSubmit)="saveCommande()">
+        <div class="form-group">
+          <label for="clientId-commande">ID du Client</label>
+          <input type="number" id="clientId-commande" formControlName="clientId" placeholder="ID du client" />
+          <div *ngIf="commandeForm.get('clientId')?.invalid && commandeForm.get('clientId')?.touched" class="error">
+            L'ID du client est requis et doit être un nombre positif.
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Produits Associés</label>
+          <div class="produit-list">
+            <div *ngFor="let produit of produits" class="produit-item">
+              <input
+                type="checkbox"
+                [id]="'produit-commande-' + produit.id"
+                [checked]="commandeForm.get('produitIds')?.value.includes(produit.id)"
+                (change)="toggleProduitForCommande(produit.id)"
+              />
+              <label [for]="'produit-commande-' + produit.id">{{ produit.nom }} ({{ produit.prix | currency:'TND' }})</label>
+            </div>
+          </div>
+          <div *ngIf="commandeForm.get('produitIds')?.invalid && commandeForm.get('produitIds')?.touched" class="error">
+            Veuillez sélectionner au moins un produit.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="status-commande">Statut</label>
+          <select id="status-commande" formControlName="status">
+            <option value="EN_ATTENTE">En Attente</option>
+            <option value="EN_COURS">En Cours</option>
+            <option value="LIVREE">Livrée</option>
+            <option value="ANNULEE">Annulée</option>
+          </select>
+          <div *ngIf="commandeForm.get('status')?.invalid && commandeForm.get('status')?.touched" class="error">
+            Le statut est requis.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="total-commande">Total</label>
+          <input type="number" id="total-commande" formControlName="total" placeholder="Total de la commande" />
+          <div *ngIf="commandeForm.get('total')?.invalid && commandeForm.get('total')?.touched" class="error">
+            Le total doit être un nombre positif.
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" [disabled]="commandeForm.invalid">Sauvegarder</button>
+          <button type="button" (click)="closeCommandeForm()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Livraison Management Section -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  <h2>Gestion des Livraisons</h2>
+  <button class="add-btn" (click)="openAddLivraisonForm()">Ajouter une Nouvelle Livraison</button>
+
+  <!-- Livraison List -->
+  <div class="livraison-table">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Commande ID</th>
+        <th>Adresse de Livraison</th>
+        <th>Status</th>
+        <th>Date de Création</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let livraison of livraisons">
+        <td>{{ livraison.id }}</td>
+        <td>{{ livraison.commandeId }}</td>
+        <td>{{ livraison.adresseLivraison }}</td>
+        <td>{{ livraison.status }}</td>
+        <td>{{ livraison.createdAt | date:'medium' }}</td>
+        <td>
+          <button class="edit-btn" (click)="openEditLivraisonForm(livraison)">Modifier</button>
+          <button *ngIf="livraison.id !== undefined" class="delete-btn" (click)="deleteLivraison(livraison.id)">Supprimer</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <p class="no-livraisons" *ngIf="livraisons.length === 0">Aucune livraison trouvée.</p>
+  </div>
+
+  <!-- Livraison Form Modal -->
+  <div class="modal-overlay" *ngIf="showLivraisonForm">
+    <div class="modal-content">
+      <h3>{{ isEditingLivraison ? 'Modifier la Livraison' : 'Ajouter une Nouvelle Livraison' }}</h3>
+      <form [formGroup]="livraisonForm" (ngSubmit)="saveLivraison()">
+        <div class="form-group">
+          <label for="commandeId-livraison">ID de la Commande</label>
+          <select id="commandeId-livraison" formControlName="commandeId">
+            <option [ngValue]="null" disabled>Sélectionnez une commande</option>
+            <option *ngFor="let commande of commandes" [ngValue]="commande.id">
+              Commande #{{ commande.id }} (Client ID: {{ commande.clientId }})
+            </option>
+          </select>
+          <div *ngIf="livraisonForm.get('commandeId')?.invalid && livraisonForm.get('commandeId')?.touched" class="error">
+            L'ID de la commande est requis.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="adresseLivraison">Adresse de Livraison</label>
+          <input id="adresseLivraison" formControlName="adresseLivraison" placeholder="Adresse de livraison" />
+          <div *ngIf="livraisonForm.get('adresseLivraison')?.invalid && livraisonForm.get('adresseLivraison')?.touched" class="error">
+            L'adresse de livraison est requise (minimum 5 caractères).
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="status-livraison">Statut</label>
+          <select id="status-livraison" formControlName="status">
+            <option value="EN_COURS">En Cours</option>
+            <option value="LIVREE">Livrée</option>
+            <option value="ANNULEE">Annulée</option>
+          </select>
+          <div *ngIf="livraisonForm.get('status')?.invalid && livraisonForm.get('status')?.touched" class="error">
+            Le statut est requis.
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" [disabled]="livraisonForm.invalid">Sauvegarder</button>
+          <button type="button" (click)="closeLivraisonForm()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Client Management Section -->
+  <h2>Gestion des Clients</h2>
+
+  <!-- Client List -->
+  <div class="client-table">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+        <th>Adresse</th>
+        <th>Date de Naissance</th>
+        <th>Commandes</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let client of clients">
+        <td>{{ client.id }}</td>
+        <td>{{ client.nom }}</td>
+        <td>{{ client.prenom }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.telephone }}</td>
+        <td>{{ client.adresse || 'N/A' }}</td>
+        <td>{{ client.dateNaissance ? (client.dateNaissance | date:'mediumDate') : 'N/A' }}</td>
+        <td>{{ client.commandeIds?.join(', ') || 'Aucune' }}</td>
+        <td>
+          <button class="edit-btn" (click)="openEditClientForm(client)">Modifier</button>
+          <button *ngIf="client.id !== undefined" class="delete-btn" (click)="deleteClient(client.id)">Supprimer</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <p class="no-clients" *ngIf="clients.length === 0">Aucun client trouvé.</p>
+  </div>
+
+  <!-- Client Form Modal -->
+  <div class="modal-overlay" *ngIf="showClientForm">
+    <div class="modal-content">
+      <h3>Modifier le Client</h3>
+      <form [formGroup]="clientForm" (ngSubmit)="saveClient()">
+        <div class="form-group">
+          <label for="nom-client">Nom</label>
+          <input id="nom-client" formControlName="nom" placeholder="Nom du client" />
+          <div *ngIf="clientForm.get('nom')?.invalid && clientForm.get('nom')?.touched" class="error">
+            Le nom est requis (2-100 caractères).
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="prenom-client">Prénom</label>
+          <input id="prenom-client" formControlName="prenom" placeholder="Prénom du client" />
+          <div *ngIf="clientForm.get('prenom')?.invalid && clientForm.get('prenom')?.touched" class="error">
+            Le prénom est requis (2-100 caractères).
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email-client">Email</label>
+          <input id="email-client" formControlName="email" placeholder="Email du client" />
+          <div *ngIf="clientForm.get('email')?.invalid && clientForm.get('email')?.touched" class="error">
+            L'email est requis et doit être valide.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="telephone-client">Téléphone</label>
+          <input id="telephone-client" formControlName="telephone" placeholder="Téléphone du client (8 chiffres)" />
+          <div *ngIf="clientForm.get('telephone')?.invalid && clientForm.get('telephone')?.touched" class="error">
+            Le téléphone est requis (exactement 8 chiffres).
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="adresse-client">Adresse</label>
+          <input id="adresse-client" formControlName="adresse" placeholder="Adresse du client" />
+          <div *ngIf="clientForm.get('adresse')?.invalid && clientForm.get('adresse')?.touched" class="error">
+            L'adresse ne doit pas dépasser 200 caractères.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="dateNaissance-client">Date de Naissance</label>
+          <input type="date" id="dateNaissance-client" formControlName="dateNaissance" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" [disabled]="clientForm.invalid">Sauvegarder</button>
+          <button type="button" (click)="closeClientForm()">Annuler</button>
         </div>
       </form>
     </div>

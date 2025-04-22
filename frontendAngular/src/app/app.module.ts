@@ -14,6 +14,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { VoirProfilComponent } from './components/voir-profil/voir-profil.component';
 import { AccueilComponent } from './components/accueil/accueil.component';
 import { MenuListComponent } from './components/menu-list/menu-list.component';
+import { CommandeListComponent } from './components/commande-list/commande-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { MenuListComponent } from './components/menu-list/menu-list.component';
     PageAdminComponent,
     AccueilComponent,
     VoirProfilComponent,
-    MenuListComponent
+    MenuListComponent,
+    CommandeListComponent
   ],
     imports: [
         BrowserModule,

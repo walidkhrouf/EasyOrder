@@ -16,6 +16,8 @@
     <div *ngIf="isAuthenticated" class="nav-group">
       <a routerLink="/accueil">Accueil</a>
       <a routerLink="/voir-profil">Voir Profil</a>
+      <!-- Show admin link only for admin users -->
+      <a *ngIf="isAdmin()" routerLink="/page-admin">Admin</a>
       <a (click)="logout()">Déconnexion</a>
     </div>
   </div>

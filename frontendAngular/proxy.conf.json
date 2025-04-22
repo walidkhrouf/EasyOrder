@@ -28,5 +28,23 @@
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"
+    },
+    "/commandes": {
+      "target": "http://localhost:8088",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
+    "/livraisons": {
+      "target": "http://localhost:8088",
+      "secure": false,
+      "changeOrigin": true
+    },
+    "/clients/*": {
+      "target": "http://localhost:8088",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
     }
   }
+
