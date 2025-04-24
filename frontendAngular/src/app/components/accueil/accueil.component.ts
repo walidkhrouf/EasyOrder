@@ -25,6 +25,15 @@ export class AccueilComponent implements OnInit {
   ngOnInit(): void {
     this.loadAvailableMenus();
   }
+  searchTerm: string = ''; // 👈 nouvelle propriété
+
+  get filteredMenus(): Menu[] {
+    return this.availableMenus.filter(menu =>
+      menu.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      (menu.description && menu.description.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+      (menu.categorie && menu.categorie.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    );
+  }
 
   navigateTo(path: string): void {
     this.router.navigate([path]);
